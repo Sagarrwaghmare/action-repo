@@ -54,4 +54,4 @@ git push origin new-feature
 3.  Confirm the merge.
 
 ## 🔍 Verification
-Check the Dashboard UI running at `http://localhost:5000`. The events should appear within 15 seconds of the action.
+Check the Dashboard UI running at `http://localhost:5000`. The events should appear within 15 seconds of the action. 
