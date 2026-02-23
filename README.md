@@ -1,87 +1,60 @@
+### 2. File for `action-repo`
+**Filename:** `README.md`
 
----
+```markdown
+# Action Trigger Repository
 
-# GitHub Action Repository
+This repository acts as the **source** of Git events (Pushes, Pull Requests, and Merges) for the Webhook Receiver Assessment.
 
-This repository is used as the source of Git events (pushes, pull requests, etc.) for the **Git Event Webhook Dashboard** project.
+**Note:** This repository contains dummy code/files intended solely to trigger GitHub Actions/Webhooks.
 
-The purpose of this repository is to be configured with a webhook that sends notifications about its activity to a separate listener application.
+## 🔗 How to Connect
 
-## How It Works
+To test the Webhook Receiver application with this repository, you must configure a webhook.
 
-The data flow is simple:
+**⚠️ Important:** You generally cannot add webhooks to a repository you do not own. **Please Fork this repository** to your own account to configure the settings.
 
-1.  You perform a Git action in this repository (e.g., `git push`).
-2.  GitHub triggers a webhook event.
-3.  The event is sent over the internet to a public URL provided by **Ngrok**.
-4.  Ngrok tunnels this data securely to the listener application running on a local machine.
-5.  The event appears on the dashboard.
+### Configuration Steps
 
-## Setup Instructions
+1.  **Fork** this repository.
+2.  Navigate to **Settings** > **Webhooks** > **Add webhook**.
+3.  **Payload URL:** Paste the Ngrok URL from your running Webhook Receiver app and append `/webhook/receiver`.
+    *   *Format:* `https://<your-ngrok-id>.ngrok-free.app/webhook/receiver`
+4.  **Content type:** Select `application/json` (Crucial!).
+5.  **Secret:** Leave blank.
+6.  **Which events would you like to trigger this webhook?**
+    *   Select **"Let me select individual events"**.
+    *   Check **Pushes**.
+    *   Check **Pull requests**.
+7.  Click **Add webhook**.
 
-To connect this repository to your local dashboard application, you must configure a webhook.
+## ⚡ How to Trigger Events
 
-### Step 1: Get the Webhook URL from Ngrok
+Once the webhook is added and the green checkmark appears (indicating a successful ping), you can generate events:
 
-Before configuring this repository, the main **Webhook Dashboard** application must be running, and you must have an active Ngrok tunnel pointing to it.
+### 1. Trigger a PUSH
+Edit any file (e.g., `README.md`), commit, and push to the branch.
+```bash
+git add .
+git commit -m "Testing Push Event"
+git push origin main
+```
 
-1.  On the machine running the dashboard application, start Ngrok to expose port 5000:
-    ```bash
-    ngrok http 5000
-    ```
+### 2. Trigger a PULL REQUEST
+Create a new branch, push changes, and open a PR via the GitHub UI.
+```bash
+git checkout -b new-feature
+# make changes
+git commit -m "New feature"
+git push origin new-feature
+```
+*Then go to GitHub and click "Compare & pull request".*
 
-2.  Ngrok will provide a public HTTPS URL. **Copy this URL.** It will look something like this:
-    ```
-    https://a1b2-c3d4-e5f6.ngrok-free.app
-    ```
+### 3. Trigger a MERGE (Brownie Points)
+1.  Go to the Pull Request you just created on GitHub.
+2.  Click the **"Merge pull request"** button.
+3.  Confirm the merge.
 
-### Step 2: Configure the GitHub Webhook
-
-Now, you will tell this repository where to send its events.
-
-1.  In this GitHub repository, navigate to **Settings** > **Webhooks**.
-
-2.  Click the **Add webhook** button.
-
-3.  Fill out the form with the following details:
-
-    *   **Payload URL**: Paste your HTTPS Ngrok URL from Step 1 and append the endpoint path `/webhook/receiver`.
-        > **Example**: `https://a1b2-c3d4-e5f6.ngrok-free.app/webhook/receiver`
-
-    *   **Content type**: This is critical. Change it to **`application/json`**.
-
-    *   **Which events would you like to trigger this webhook?**:
-        *   Select **"Let me select individual events"**.
-        *   Check the boxes for **Pushes** and **Pull requests**.
-
-4.  Leave everything else as default and click **Add webhook**.
-
-### Step 3: Verify the Connection
-
-After adding the webhook, GitHub will send a "ping" event. You can verify the connection in three places:
-
-*   **On GitHub**: In the Webhooks settings, you should see your new webhook with a green checkmark, indicating the last delivery was successful.
-*   **In the Ngrok Terminal**: You will see a log line showing a `POST /webhook/receiver` with a `200 OK` status.
-*   **In the Dashboard App Terminal**: You will see the "EVENT RECEIVED" log message from the Flask application.
-
-## Usage
-
-Once set up, simply use Git as you normally would with this repository.
-
-*   **To test a PUSH event**:
-    ```bash
-    git commit -m "Test push event" --allow-empty
-    git push origin main
-    ```
-
-*   **To test a PULL REQUEST event**:
-    1.  Create and push a new branch.
-    2.  Go to the repository on GitHub and open a new Pull Request.
-
-*   **To test a MERGE event**:
-    1.  Merge the Pull Request you created on the GitHub website.
-
-Each of these actions will now be sent through the webhook and should appear on the dashboard within seconds.
-
----
-*If the Ngrok tunnel is restarted, it will generate a new public URL. You must update the **Payload URL** in the webhook settings with the new address.*
+## 🔍 Verification
+Check the Dashboard UI running at `http://localhost:5000`. The events should appear within 15 seconds of the action.
+```
