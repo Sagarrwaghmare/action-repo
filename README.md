@@ -1,7 +1,4 @@
-### 2. File for `action-repo`
-**Filename:** `README.md`
 
-```markdown
 # Action Trigger Repository
 
 This repository acts as the **source** of Git events (Pushes, Pull Requests, and Merges) for the Webhook Receiver Assessment.
