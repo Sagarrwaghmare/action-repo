@@ -17,13 +17,14 @@ To test the Webhook Receiver application with this repository, you must configur
 2.  Navigate to **Settings** > **Webhooks** > **Add webhook**.
 3.  **Payload URL:** Paste the Ngrok URL from your running Webhook Receiver app and append `/webhook/receiver`.
     *   *Format:* `https://<your-ngrok-id>.ngrok-free.app/webhook/receiver`
-4.  **Content type:** Select `application/json` (Crucial!).
-5.  **Secret:** Leave blank.
-6.  **Which events would you like to trigger this webhook?**
+4. **Also make sure you have authenticated your ngrok before next steps**
+5.  **Content type:** Select `application/json` (Crucial!).
+6.  **Secret:** Leave blank.
+7.  **Which events would you like to trigger this webhook?**
     *   Select **"Let me select individual events"**.
     *   Check **Pushes**.
     *   Check **Pull requests**.
-7.  Click **Add webhook**.
+8.  Click **Add webhook**.
 
 ## ⚡ How to Trigger Events
 
