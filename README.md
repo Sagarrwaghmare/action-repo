@@ -55,3 +55,4 @@ git push origin new-feature
 
 ## 🔍 Verification
 Check the Dashboard UI running at `http://localhost:5000`. The events should appear within 15 seconds of the action.
+
